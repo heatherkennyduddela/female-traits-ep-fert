@@ -1,0 +1,249 @@
+
+################################################################################
+# Exploratory figs for known-age birds 2022
+# Heather Kenny-Duddela
+# Jan 21, 2025
+################################################################################
+
+# libraries
+library(ggplot2) # general plotting
+library(lubridate) # formatting dates
+library(ggpubr) # for arranging multiple plots in the same panel
+
+# data
+fem.s <- read.csv("output-files/female_season_table_2025-03-13.csv")
+
+male.s <- read.csv("output-files/male_season_table_2025-03-13.csv")
+
+
+# Numbers of known age birds----------------------------------------------------
+fem.age <- subset(fem.s, fem.s$certainty!="low")
+length(fem.age$band) # 32 out of 47 (68%)
+
+male.age <- subset(male.s, male.s$certainty!="low")
+length(male.age$band) # 32 out of 48 (67%)
+
+cols <- c("Females"="#CC00FF", "Males"="#00B0F0")
+
+
+# Check correlations with CI----------------------------------------------------
+#-------------------------------------------------------------------------------
+fem.age$ci_1 <- ymd(fem.age$ci_1)
+fem.age$age.class <- factor(fem.age$age.class, levels=c("SY", "ASY"))
+
+t.test(fem.age$ci_1_julian ~ fem.age$age.class)
+# Welch Two Sample t-test
+# 
+# data:  fem.age$ci_1_julian by fem.age$age.class
+# t = 3.6696, df = 28.42, p-value = 0.0009949
+# alternative hypothesis: true difference in means between group SY and group ASY is not equal to 0
+# 95 percent confidence interval:
+#   6.108794 21.522579
+# sample estimates:
+#   mean in group SY mean in group ASY 
+# 152.8824          139.0667
+
+
+male.age$ci_1 <- ymd(male.age$socF_ci)
+male.age$age.class <- factor(male.age$age.class, levels=c("SY", "ASY"))
+
+t.test(male.age$ci_julian ~ male.age$age.class)
+# Welch Two Sample t-test
+# 
+# data:  male.age$ci_julian by male.age$age.class
+# t = 4.0961, df = 23.548, p-value = 0.0004262
+# alternative hypothesis: true difference in means between group SY and group ASY is not equal to 0
+# 95 percent confidence interval:
+#   7.673286 23.291420
+# sample estimates:
+#   mean in group SY mean in group ASY 
+# 155.6000          140.1176
+
+
+# Plots for female known-age birds----------------------------------------------
+#-------------------------------------------------------------------------------
+
+
+## CI and age class
+fem.age.ci <- ggplot(fem.age, aes(x=age.class, y=ci_1)) +
+  geom_boxplot(fill = "#CC00FF") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("First clutch lay date") +
+  theme_light()
+
+# ggsave("output-files/female known age and ci.png", h=3.5, w=2.8)
+
+
+## RS and age class
+fem.age.rs <- ggplot(fem.age, aes(x=age.class, y=tot.chick)) +
+  geom_boxplot(fill="#CC00FF") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("Total offspring fledged")+
+  theme_light()
+
+# ggsave("output-files/female known age and RS.png", h=3.5, w=2.8)
+
+
+## Binary EP and age class
+fem.age.bin <- ggplot(fem.age, aes(x=age.class)) +
+  geom_bar(aes(fill=as.factor(ep.yes))) +
+  scale_fill_manual(values=c("darkgray","orange"),
+                    name="EP Status",
+                    labels=c("No", "Yes")) +
+  theme_light() +
+  xlab("Age class")
+
+ggsave("output-files/female binary EP by age for legend.png")
+
+# no legend
+fem.age.bin2 <- ggplot(fem.age, aes(x=age.class)) +
+  geom_bar(aes(fill=as.factor(ep.yes))) +
+  scale_fill_manual(values=c("darkgray","orange"),
+                    name="EP Status",
+                    labels=c("No", "Yes")) +
+  theme_light() +
+  xlab("Age class") +
+  theme(legend.position="none")
+
+
+## Number EPO and age class
+fem.age.numEPO <- ggplot(fem.age, aes(x=age.class, y=num.epo)) +
+  geom_boxplot(fill="#CC00FF") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("Number of EPO")+
+  theme_light()
+
+
+## Proportion EPO and age class
+fem.age.propEPO <- ggplot(fem.age, aes(x=age.class, y=season.prop.ep)) +
+  geom_boxplot(fill="#CC00FF") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("Proportion EPO")+
+  theme_light()
+
+## Number of sires and age class
+fem.age.mates <- ggplot(fem.age, aes(x=age.class, y=num.tot.mates)) +
+  geom_boxplot(fill="#CC00FF") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0.05, w=0.1)) +
+  xlab("Age class") +
+  ylab("Number of sires")+
+  theme_light()
+
+
+right.plot <- ggarrange(fem.age.bin2, fem.age.ci, fem.age.rs,
+          labels=c("B","D","F"),
+          nrow=3, ncol=1,
+          align = "v")
+
+left.plot <- ggarrange(fem.age.numEPO, fem.age.propEPO, fem.age.mates, 
+          labels=c("A", "C", "E"),
+          nrow=3, ncol=1,
+          align = "v")
+
+ggarrange(left.plot, right.plot,
+          nrow=1, ncol=2,
+          align="hv")
+
+ggsave("output-files/fem known age plots combined_2025-03-13.png", w=5.5, h=7)
+
+
+# Known-age males --------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+
+## CI and age class
+male.age.ci <- ggplot(male.age, aes(x=age.class, y=ci_1)) +
+  geom_boxplot(fill = "#00B0F0") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("First clutch lay date") +
+  theme_light()
+
+
+## RS and age class
+male.age.rs <- ggplot(male.age, aes(x=age.class, y=tot.chick)) +
+  geom_boxplot(fill="#00B0F0") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("Total offspring sired")+
+  theme_light()
+
+
+
+## Binary EP and age class
+male.age.bin <- ggplot(male.age, aes(x=age.class)) +
+  geom_bar(aes(fill=as.factor(ep.yes))) +
+  scale_fill_manual(values=c("darkgray","orange"),
+                    name="EP Status",
+                    labels=c("No", "Yes")) +
+  theme_light() +
+  xlab("Age class")
+
+# without legend
+male.age.bin2 <- ggplot(male.age, aes(x=age.class)) +
+  geom_bar(aes(fill=as.factor(ep.yes))) +
+  scale_fill_manual(values=c("darkgray","orange"),
+                    name="EP Status",
+                    labels=c("No", "Yes")) +
+  theme_light() +
+  xlab("Age class") +
+  theme(legend.position = "none")
+
+
+## Number EPO and age class
+male.age.numEPO <- ggplot(male.age, aes(x=age.class, y=ep.chick)) +
+  geom_boxplot(fill="#00B0F0") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("Number of EPO")+
+  theme_light()
+
+
+## Proportion EPO and age class
+male.age.propEPO <- ggplot(male.age, aes(x=age.class, y=prop.sired.epo)) +
+  geom_boxplot(fill="#00B0F0") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("Proportion EPO")+
+  theme_light()
+
+## Number of dams
+male.age.mates <- ggplot(male.age, aes(x=age.class, y=num.tot.mates)) +
+  geom_boxplot(fill="#00B0F0") +
+  geom_point(alpha=0.5, 
+             position=position_jitter(h=0, w=0.1)) +
+  xlab("Age class") +
+  ylab("Number of dams")+
+  theme_light()
+
+
+m.left.plot <- ggarrange(male.age.numEPO, male.age.propEPO, male.age.mates,
+                      labels=c("A","C","E"),
+                      nrow=3, ncol=1,
+                      align = "v")
+
+m.right.plot <- ggarrange(male.age.bin2, male.age.ci, male.age.rs, 
+                        labels=c("B", "D", "F"),
+                        nrow=3, ncol=1,
+                        align = "v")
+
+ggarrange(m.left.plot, m.right.plot,
+          nrow=1, ncol=2,
+          align="h")
+
+ggsave("output-files/male known age plots combined_2025-03-13.png", w=5.5, h=7)
+
+

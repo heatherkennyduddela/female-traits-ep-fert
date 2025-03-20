@@ -1,0 +1,130 @@
+
+#-------------------------------------------------------------------------------
+# Calculate number of total unknown sires, and number within each site
+# for 2022
+#-------------------------------------------------------------------------------
+
+
+# Half sibs from different mothers (different families) should share the same dad
+
+
+# libraries
+library(tidyverse)
+library(ggplot2)
+
+### load data tables for 2022
+
+# fertilization types summarized by clutch ID
+# from 02_summarise total RS and fertilization types
+shared.fert.clutch2 <- read.csv("input-files/fert_2022_by_clutchID.csv")
+
+# full kinship table with metadata
+# from 01_paternity 2022 assignment with lcMLkin output
+load("input-files/kin2_22.Rdata")
+
+# list of kids with unknown dads
+# from 01_paternity 2022 assignment with lcMLkin output
+load("input-files/kids_unk_dads_2022.Rdata")
+
+# table of offspring with assigned parents
+# from 02_summarise total RS and fertilization types
+assigned <- read.csv("input-files/kin_2022_parent_offspring_assigned_wide.csv")
+
+
+#-------------------------------------------------------------------------------
+
+# first test method with half sibs of known dads
+
+# genetic full-sibs from 2022 had relatedness values >= 0.239
+
+# check range of relatedness values for genetic half sibs (share either same
+# mom or same dad)
+
+# first try with one kid at a time, identify half sibs with same dad
+# for first kid in table, pull out other kids with same dad but different mom
+
+kid.33601 <- subset(assigned, assigned$Band_dad=="2850-57868" &
+                      assigned$Band_mom!="2850-57629")
+kid.33622 <- subset(assigned, assigned$Band_dad=="2350-21085" &
+                      assigned$Band_mom!="2640-97596")
+
+# try grouping by dad band, and check for dads that mated with more than one mom
+
+dad.test <- assigned %>%
+  group_by(Band_dad) %>%
+  summarise(num_moms = length(unique(Band_mom)))
+
+# list of males with EP (2 or more moms)
+dad.ep <- subset(dad.test, dad.test$num_moms>1)
+
+# subset assigned table to only include dads with ep, and get list of kid ids
+assigned.ep.dad <- subset(assigned, assigned$Band_dad %in% dad.ep$Band_dad)
+
+# pull out kid-kid kinship values from full table, for kids in the assigned.ep.dad list
+potential.hs <- subset(kin2.22, kin2.22$Ind1 %in% assigned.ep.dad$Ind2 &
+                         kin2.22$Ind2 %in% assigned.ep.dad$Ind2)
+
+# pull out test kids
+test.kid1 <- subset(potential.hs, potential.hs$Ind1=="CO_33628" |
+                      potential.hs$Ind2=="CO_33628")
+
+plot(test.kid1$k0_hat, test.kid1$pi_HAT)
+
+
+test.kid2 <- subset(potential.hs, potential.hs$Ind1=="CO_33642" |
+                      potential.hs$Ind2=="CO_33642")
+
+plot(test.kid2$k0_hat, test.kid2$pi_HAT)
+
+# remove full sibs using cutoff value
+potential.hs.nofull <- subset(potential.hs, potential.hs$pi_HAT<0.239)
+
+plot(potential.hs.nofull$k0_hat, potential.hs.nofull$pi_HAT)
+
+
+### create list of half sibs by looping through assigned.ep.dad table
+
+# remove kids with unknown dads or moms
+assigned.noNA <- subset(assigned.ep.dad, !is.na(assigned.ep.dad$Band_dad) &
+                          !is.na(assigned.ep.dad$Band_mom))
+
+storage.hs <- as.data.frame(matrix(nrow=1,ncol=4,NA))
+colnames(storage.hs) <- c("Ind1","Ind2","mom_same","dad_same")
+
+# loop through kids
+for (i in 1:length(assigned.noNA$Ind2)) {
+  # loop through moms and dads
+  for (j in 1:length(assigned.noNA$Band_mom)) {
+    # case of same dad, different mom
+    if(assigned.noNA$Band_dad[i] == assigned.noNA$Band_dad[j] &
+       assigned.noNA$Band_mom[i] != assigned.noNA$Band_mom[j]) {
+      storage <- c(assigned.noNA$Ind2[i], 
+                   assigned.noNA$Ind2[j],
+                   F,T)
+      storage.hs <- rbind(storage.hs, storage)
+    }
+    # case of same mom, different dad
+    if(assigned.noNA$Band_dad[i] != assigned.noNA$Band_dad[j] &
+       assigned.noNA$Band_mom[i] == assigned.noNA$Band_mom[j]) {
+      storage <- c(assigned.noNA$Ind2[i], 
+                   assigned.noNA$Ind2[j],
+                   T,F)
+      storage.hs <- rbind(storage.hs, storage)
+    }
+  }
+}
+
+storage.hs <- storage.hs[-1,]
+
+# list of half sibs includes duplicate pairs (ex: AB and BA)
+# do a full join to pull out half sib pairs from the kinship list
+
+kin.hs <- inner_join(storage.hs, kin2.22, by=c("Ind1","Ind2"))
+
+plot(kin.hs$k0_hat, kin.hs$pi_HAT)
+
+
+
+
+
+

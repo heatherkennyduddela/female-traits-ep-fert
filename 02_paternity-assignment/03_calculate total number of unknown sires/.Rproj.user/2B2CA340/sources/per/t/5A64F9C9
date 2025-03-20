@@ -1,0 +1,26 @@
+{
+    "id": "5A64F9C9",
+    "path": "~/CU Boulder/BARS fieldwork/2022 Field and Lab/Paternity assignment methods/2022 paternity analysis v2/03_calculate total number of unknown sires/calculate total number of unknown sires_v2.R",
+    "project_path": "calculate total number of unknown sires_v2.R",
+    "type": "r_source",
+    "hash": "1913490180",
+    "contents": "",
+    "dirty": false,
+    "created": 1718142749725.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "12,16",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1718205727,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1718205727095,
+    "read_only": false,
+    "read_only_alternatives": []
+}
