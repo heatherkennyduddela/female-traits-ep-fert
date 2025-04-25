@@ -121,21 +121,6 @@ test5 <- subset(kin2.22, kin2.22$Ind1=="CO_57806" | kin2.22$Ind2=="CO_57806")
 write.csv(kin2.22, "generated-files/kin_2022_all_with_labels.csv", row.names=F)
 save(kin2.22, file="generated-files/kin2_22.Rdata")
 
-# make list of kids that were sequenced from 2022
-kids.sequenced <- subset(kin2.22, kin2.22$Type_ind1=="kid" &
-                           kin2.22$Type_ind2=="kid")
-kids.sequenced2 <- kids.sequenced[, c(1,8:14)]
-kids.sequenced3 <- kids.sequenced[, c(2,15:21)]
-colnames(kids.sequenced2) <- c("SeqID", "Band","Site", "Type", "FamilyID",
-                               "Nest","Brood","clutchID")
-colnames(kids.sequenced3) <- c("SeqID", "Band","Site", "Type", "FamilyID",
-                               "Nest","Brood","clutchID")
-kids.sequenced4 <- rbind(kids.sequenced2, kids.sequenced3)
-kids.sequenced5 <- kids.sequenced4[-(which(duplicated(kids.sequenced4$Band))), ]
-# save
-write.csv(kids.sequenced5, "generated-files/list of sequenced nestlings 2022.csv", row.names = F)
-
-
 
 # Pull out all possible kid-parent combinations from the table
 # due to structure of table, ind1 is all mom/dad and ind2 is all kid
@@ -364,20 +349,12 @@ t.test(pi_HAT ~ parent, parent.offspring.plot)
 # 0.4171899             0.4151191 
 
 
-
-
 # check again for extra-pair sires after filtering extra dads
 kin.ep <- kin.cutoff.info[which(kin.cutoff.info$FamilyID_ind1 != kin.cutoff.info$FamilyID_ind2), ]
 
 # save list of ep dads
 write.csv(kin.ep, file="generated-files/kin_2022_ep_dads.csv", row.names=F)
 
-# check between site ep fertilizations
-kin.ep.site <- kin.cutoff.info[which(kin.cutoff.info$FamilyID_ind1 != kin.cutoff.info$FamilyID_ind2 &
-                                   kin.cutoff.info$Site_ind1 != kin.cutoff.info$Site_ind2), ]
-
-# save between site ep dads
-write.csv(kin.ep.site, file="generated-files/kin_2022_ep_dads_diff_site.csv", row.names=F)
 
 # filter to only keep matches >0.3
 # this is no different from the current kin.ep.site object
