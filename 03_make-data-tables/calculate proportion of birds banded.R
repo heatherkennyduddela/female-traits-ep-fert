@@ -7,8 +7,10 @@ library(dplyr)
 library(lubridate)
 library(tidyr)
 
-# load data
+# load data, original input file
 band22 <- read.csv("input-files/AdultData2022_fromDatabase.csv")
+
+#-------------------------------------------------------------------------------
 
 # check for fledglings
 unique(band22$sex)

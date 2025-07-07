@@ -510,7 +510,7 @@ ggplot(pred.male.Fbreast.adj1) +
 #-------------------------------------------------------------------------------
 
 # set colors to create a legend
-cols <- c("Females"="#CC00FF", "Males"="#00B0F0")
+cols <- c("Females"="#F2AA84", "Males"="#0033CC")
 
 
 ## Tail ------------------------------------------------------------------------
@@ -703,7 +703,7 @@ binary.social.breast <- ggplot() +
 ## save plots to load in a different script-------------------------------------
 save(binary.focal.breast, binary.focal.tail, binary.focal.throat, 
      binary.social.breast, binary.social.tail, binary.social.throat,
-     file="output-files/binary EP combined plots_2025-03-13.Rdata")
+     file="output-files/binary EP combined plots_2025-03-13_bluetan.Rdata")
 
 
 

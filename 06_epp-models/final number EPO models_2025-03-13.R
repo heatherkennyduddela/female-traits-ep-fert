@@ -755,7 +755,7 @@ ggplot(pred.male.numEPO.breast.adj1) +
 #-------------------------------------------------------------------------------
 
 # set colors to create a legend
-cols <- c("Females"="#CC00FF", "Males"="#00B0F0")
+cols <- c("Females"="#F2AA84", "Males"="#0033CC")
 
 
 ## Tail ------------------------------------------------------------------------
@@ -950,7 +950,7 @@ ggsave("output-files/combined plot female and male mate breast on numEPO.png",
 
 save(numEPO.focal.breast, numEPO.focal.tail, numEPO.focal.throat, 
      numEPO.social.breast, numEPO.social.tail, numEPO.social.throat,
-     file="output-files/numEPO combined plots_2025-03-13.Rdata")
+     file="output-files/numEPO combined plots_2025-03-13_bluetan.Rdata")
 
 
 

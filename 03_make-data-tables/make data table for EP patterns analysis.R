@@ -11,9 +11,8 @@ library(tidyverse) # includes dplyr, ggplot2, lubridate
 ### load data
 
 ## banding data for individual size, color, social mate ID
-
-# longitudinal database downloaded 2024-06-11
-band22 <- read.csv("input-files/AdultData2022_fromDatabase.csv")
+# original input file
+band22 <- read.csv("input-files/AdultData2022_fromDatabase2.csv")
 
 
 ## paternity assignments for EP mating
@@ -31,7 +30,7 @@ mates.fem <- read.csv("input-files/female number of mates 2022.csv")
 mates.male <- read.csv("input-files/male number of mates 2022.csv")
 mates.fem.clutch <- read.csv("input-files/female number of mates by clutch 2022.csv")
 
-## estimated bird ages
+## estimated bird ages, original input file
 age22 <- read.csv("input-files/table of estimated ages 2022.csv")
 
 # remove duplicated band from age22
@@ -98,7 +97,7 @@ fem2 <- select(fem, band, site, sex, mean_rwl, mean_rts, mean_lts,
                vent_avg_bright, ci_1, tot_eggs, tot_fledge, prop.fledge)
 
 # add female age and uncertainty
-fem3 <- left_join(fem2, age22.2[,c(2,7,9)]) # band, est.age, certainty
+fem3 <- left_join(fem2, age22.2[,c(1,4,6)]) # band, est.age, certainty
 
 ### Summarise EP mating by females across the whole season
 pat22.fem.season <- pat22 %>% group_by(Band_mom, fert_type) %>%
@@ -170,7 +169,7 @@ male.traits <- select(male, band, throat_avg_bright, breast_avg_bright,
                      mean_lts)
 
 # add male age
-male.traits2 <- left_join(male.traits, age22.2[,c(2,7,9)], by="band")
+male.traits2 <- left_join(male.traits, age22.2[,c(1,4,6)], by="band")
 
 # change colnames
 colnames(male.traits2) <- c("mate_band_1", "socM_t.avg.bright", 
@@ -262,7 +261,7 @@ male2.2 <- subset(male2, !is.na(male2$throat_avg_bright) |
                     !is.na(male2$vent_avg_bright))
 
 # add male age and uncertainty
-male3 <- left_join(male2.2, age22.2[,c(2,7,9)]) # band, est.age, certainty
+male3 <- left_join(male2.2, age22.2[,c(1,4,6)]) # band, est.age, certainty
 
 ### Summarise EP mating by males across the whole season
 pat22.male.season <- pat22 %>% group_by(Band_dad, fert_type) %>%
@@ -362,7 +361,7 @@ female.traits <- select(fem, band, throat_avg_bright, breast_avg_bright,
                       mean_lts, ci_1, prop.fledge, tot_eggs, old_new_1)
 
 # add female age
-female.traits2 <- left_join(female.traits, age22.2[,c(2,7,9)], by="band")
+female.traits2 <- left_join(female.traits, age22.2[,c(1,4,6)], by="band")
 
 # add prop.wp
 female.traits3 <- left_join(female.traits2, fem8[,c(1,35)], by="band")

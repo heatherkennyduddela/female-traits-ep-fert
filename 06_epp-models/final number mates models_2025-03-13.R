@@ -460,7 +460,7 @@ ggplot(pred.male.numMates.breast.adj1) +
 #-------------------------------------------------------------------------------
 
 # set colors to create a legend
-cols <- c("Females"="#CC00FF", "Males"="#00B0F0")
+cols <- c("Females"="#F2AA84", "Males"="#0033CC")
 
 
 ## Tail ------------------------------------------------------------------------
@@ -652,6 +652,6 @@ social.breast <- ggplot() +
 ## save plots as Rdata to load in a different script----------------------------
 
 save(focal.tail, focal.throat, focal.breast, social.tail, social.breast,
-     social.throat, file="output-files/numMates combined plots_2025-03-13.Rdata")
+     social.throat, file="output-files/numMates combined plots_2025-03-13_bluetan.Rdata")
 
 

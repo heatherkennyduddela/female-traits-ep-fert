@@ -21,12 +21,11 @@ load("input-files/kin2_22.Rdata")
 # from 01_paternity 2022 assignment with lcMLkin output
 load("input-files/kids_unk_dads_2022.Rdata")
 
-# families for paternity table
-# from "add clutch ID to family info.R" script
-load("input-files/fam_clutch.RData")
-fam.22 <- fam.clutch
+# families for paternity table, original input file
+fam.22 <- read.csv("input-files/fam_clutch_2022_updated broods.csv")
 # replace "-" in seqID with "_"
 fam.22$Seq.ID.test <- gsub("-","_",fam.22$Seq.ID)
+
 
 
 # count number of mates per male
@@ -129,11 +128,11 @@ for (i in 1:length(unk.fam22$FamilyID)) {
 # add in kids not in the sib list
 
 kid.not.in.sib.list.unique <- as.data.frame(kid.not.in.sib.list.unique)
-colnames(kid.not.in.sib.list.unique)[] <- "Seq.ID.test"
+colnames(kid.not.in.sib.list.unique)[1] <- "Seq.ID.test"
 
 # add family ID
 kid.not.in.sib.list.unique.fam <- left_join(kid.not.in.sib.list.unique, 
-                                            fam.22[,c(8,23)], by="Seq.ID.test")
+                                            fam.22[,c(5,11)], by="Seq.ID.test")
 # add number of unk dads
 kid.not.in.sib.list.unique.fam$num.dads <- 1
 

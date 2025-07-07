@@ -11,7 +11,6 @@ library(ggplot2)
 library(lubridate)
 library(AICcmodavg) # for calculating AICc
 library(car) # for Anova and vif
-#library(broom) # for confidence intervals
 library(ggpubr) # for making plots with multiple panels
 
 # load data
@@ -54,25 +53,6 @@ AICc(null.pois) #216.9712
 hist(null.lm$residuals)
 plot(null.lm$fitted.values, null.lm$residuals)
 
-
-#### For number hatched
-
-ggplot(fem, aes(x=tot_hatch)) + geom_histogram()
-
-# check mean and variance
-mean(fem$tot_hatch) # 6.489362
-var(fem$tot_hatch) # 
-
-## Compare poisson and linear
-hatch.lm <- lm(tot_hatch ~ 1, data=fem)
-summary(hatch.lm)
-AICc(hatch.lm) # 216.1567
-
-hatch.pois <- glm(tot_hatch ~ 1, data=fem, family="poisson")
-summary(hatch.pois)
-AICc(hatch.pois) # 217.2058
-
-# Linear is slightly better, so got with this for both
 
 
 #-------------------------------------------------------------------------------
@@ -159,23 +139,6 @@ table2.eggs.adj5 <- cbind(table.eggs.adj5$coefficients,
 write.csv(table2.eggs.adj5, "output-files/fecundity final mod table no male traits.csv")
 
 
-## Mod hatched
-hatch.adj1 <- lm(tot_hatch ~ tail_scaled + socM_tail_scaled +
-                  throat_avg_bright_scaled + socM_t.avg.bright_scaled +
-                  breast_avg_bright_scaled + socM_r.avg.bright_scaled +
-                  ci_1_julian_scaled, data=fem)
-
-# get table of coefficients
-table.hatch.adj1 <- summary(hatch.adj1)
-table2.hatch.adj1 <- as.data.frame(cbind(table.hatch.adj1$coefficients, 
-                                        confint(hatch.adj1)))
-
-# format CI as text
-table2.hatch.adj1$ci.text <- paste("(", round(table2.hatch.adj1$`2.5 %`, 2), ", ", 
-                           round(table2.hatch.adj1$`97.5 %`, 2),")", sep="")
-
-write.csv(table2.hatch.adj1, "output-files/fecundity final mod table hatched.csv")
-
 
 #-------------------------------------------------------------------------------
 ### Visualize results
@@ -197,11 +160,11 @@ pred.eggs.tail.adj1 <- cbind(pred.eggs.tail, eggs.tail.fit.ci)
 
 # plot
 eggs.tail <- ggplot(pred.eggs.tail.adj1) +
-  geom_line(aes(x=tail, y=fit), size=1.5, color="#CC00FF", linetype="dashed") +
-  geom_ribbon(aes(x=tail, ymin=lwr, ymax=upr), fill="#CC00FF",
+  geom_line(aes(x=tail, y=fit), size=1.5, color="#F2AA84", linetype="dashed") +
+  geom_ribbon(aes(x=tail, ymin=lwr, ymax=upr), fill="#F2AA84",
               alpha=0.3) +
   geom_point(data=fem, aes(x=tail, y=tot_eggs), 
-             alpha=0.5, color="#CC00FF") +
+             alpha=0.5, color="#F2AA84") +
   xlab("Tail streamer length (mm)") +
   ylab("Total eggs laid") +
   theme_light() +
@@ -226,12 +189,12 @@ pred.eggs.breast.adj1 <- cbind(pred.eggs.breast, eggs.breast.fit.ci)
 
 # plot
 eggs.breast <- ggplot(pred.eggs.breast.adj1) +
-  geom_line(aes(x=breast_avg_bright, y=fit), size=1.5, color="#CC00FF",
+  geom_line(aes(x=breast_avg_bright, y=fit), size=1.5, color="#F2AA84",
             linetype="dashed") +
-  geom_ribbon(aes(x=breast_avg_bright, ymin=lwr, ymax=upr), fill="#CC00FF",
+  geom_ribbon(aes(x=breast_avg_bright, ymin=lwr, ymax=upr), fill="#F2AA84",
               alpha=0.3) +
   geom_point(data=fem, aes(x=breast_avg_bright, y=tot_eggs), 
-             alpha=0.5, color="#CC00FF") +
+             alpha=0.5, color="#F2AA84") +
   xlab("Breast average brightness") +
   ylab(NULL) +
   theme_light() +
@@ -259,11 +222,11 @@ pred.eggs.throat.adj1 <- cbind(pred.eggs.throat, eggs.throat.fit.ci)
 # plot
 eggs.throat <- ggplot(pred.eggs.throat.adj1) +
   geom_line(aes(x=throat_avg_bright, y=fit), size=1.5, 
-            color="#CC00FF", linetype="dashed") +
+            color="#F2AA84", linetype="dashed") +
   geom_ribbon(aes(x=throat_avg_bright, ymin=lwr, ymax=upr), 
-              fill="#CC00FF",alpha=0.3) +
+              fill="#F2AA84",alpha=0.3) +
   geom_point(data=fem, aes(x=throat_avg_bright, y=tot_eggs), 
-             alpha=0.5, color="#CC00FF") +
+             alpha=0.5, color="#F2AA84") +
   xlab("Throat average brightness") +
   ylab(NULL) +
   theme_light() +
@@ -275,7 +238,7 @@ ggsave("output-files/fecundity pred fem throat.png", h=3.5, w=4, scale=0.5)
 ggarrange(eggs.tail, eggs.throat, eggs.breast, nrow=1, ncol=3, align="hv",
           labels=c("a","b","c"),label.x=0.2, label.y=1)
 
-ggsave("output-files/effects on fecundity plots_2025-03-13.png", w=7, h=2.5)
+ggsave("output-files/effects on fecundity plots_2025-03-13_tan.png", w=7, h=2.5)
 
 ################################################################################
 # correlations between fecundity and EPP

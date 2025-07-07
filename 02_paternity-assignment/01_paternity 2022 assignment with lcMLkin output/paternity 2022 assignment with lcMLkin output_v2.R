@@ -173,24 +173,6 @@ index22 <- which(kin22.close$FamilyID_ind1 != kin22.close$FamilyID_ind2)
 # 197 pairs total
 mismatch22 <- kin22.close[index22,]
 
-# some mismatched parents have pi_hat values lower than 0.3
-# I think this is because they are grandparents or aunts/uncles instead of parents
-plot(mismatch22$k0_hat, mismatch22$pi_HAT)
-
-
-# try subsetting to test specific sib/PO relationships between different adults
-# first get table of just moms and dads
-adults22 <- subset(kin2.22, kin2.22$Type_ind1=="mom" & kin2.22$Type_ind2=="dad" |
-                    kin2.22$Type_ind1=="mom" & kin2.22$Type_ind2=="mom" |
-                    kin2.22$Type_ind1=="dad" & kin2.22$Type_ind2=="mom" |
-                    kin2.22$Type_ind1=="dad" & kin2.22$Type_ind2=="dad")
-
-# save file
-write.csv(adults22, file="generated-files/kin_2022_adults_all.csv", row.names=F)
-
-# now filter for close relatives
-adults22.close <- subset(adults22, adults22$k0_hat<0.9 & adults22$pi_HAT>0.1)
-
 # check instances of mismatched sites for po relations (different site EP)
 # 91 kids total!
 mismatch.site22 <- kin22.close[which(kin22.close$Site_ind1 != kin22.close$Site_ind2), ]

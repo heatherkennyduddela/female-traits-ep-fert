@@ -491,7 +491,7 @@ ggplot(pred.male.prop.Fbreast.adj4) +
 #-------------------------------------------------------------------------------
 
 # set colors to create a legend
-cols <- c("Females"="#CC00FF", "Males"="#00B0F0")
+cols <- c("Females"="#F2AA84", "Males"="#0033CC")
 
 
 ## Tail ------------------------------------------------------------------------
@@ -684,7 +684,7 @@ prop.social.breast <- ggplot() +
 ## save plots to load in a different script-------------------------------------
 save(prop.focal.breast, prop.focal.tail, prop.focal.throat,
      prop.social.breast, prop.social.tail, prop.social.throat,
-     file="output-files/prop EP combined plots_2025-03-13.Rdata")
+     file="output-files/prop EP combined plots_2025-03-13_bluetan.Rdata")
 
 
 

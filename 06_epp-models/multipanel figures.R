@@ -7,10 +7,10 @@
 
 # load data
 
-load("output-files/binary EP combined plots_2025-03-13.Rdata") # binary EP plots
-load("output-files/numEPO combined plots_2025-03-13.Rdata") # numEPO plots
-load("output-files/numMates combined plots_2025-03-13.Rdata") # number Mates plots
-load("output-files/prop EP combined plots_2025-03-13.Rdata") # proportion EPO plots
+load("output-files/binary EP combined plots_2025-03-13_bluetan.Rdata") # binary EP plots
+load("output-files/numEPO combined plots_2025-03-13_bluetan.Rdata") # numEPO plots
+load("output-files/numMates combined plots_2025-03-13_bluetan.Rdata") # number Mates plots
+load("output-files/prop EP combined plots_2025-03-13_bluetan.Rdata") # proportion EPO plots
 
 # libraries
 library(ggplot2) # for plotting
@@ -64,11 +64,11 @@ ggarrange(binary.focal.tail2, binary.focal.throat2, binary.focal.breast2,
           numEPO.focal.tail2, numEPO.focal.throat2, numEPO.focal.breast2,
           prop.focal.tail2, prop.focal.throat2, prop.focal.breast2,
           focal.tail2, focal.throat2, focal.breast2,
-          labels=c("a","b","c","d","e","f","g","h","i","j","k","l"),
+          labels=c("A","B","C","D","E","F","G","H","I","J","K","L"),
           nrow=4, ncol=3, align="hv",
           label.x=0.25, label.y=1)
 
-ggsave("output-files/focal bird trait effects all panels_2025-03-13.png",
+ggsave("output-files/focal bird trait effects all panels_2025-03-13_bluetan.png",
        h=8, w=7)
 
 
@@ -119,11 +119,11 @@ ggarrange(binary.social.tail2, binary.social.throat2, binary.social.breast2,
           numEPO.social.tail2, numEPO.social.throat2, numEPO.social.breast2,
           prop.social.tail2, prop.social.throat2, prop.social.breast2,
           social.tail2, social.throat2, social.breast2,
-          labels=c("a","b","c","d","e","f","g","h","i","j","k","l"),
+          labels=c("A","B","C","D","E","F","G","H","I","J","K","L"),
           nrow=4, ncol=3, align="hv",
           label.x=0.25, label.y=1)
 
-ggsave("output-files/social mate trait effects all panels_2025-03-13.png",
+ggsave("output-files/social mate trait effects all panels_2025-03-13_bluetan.png",
        h=8, w=7)
 
 

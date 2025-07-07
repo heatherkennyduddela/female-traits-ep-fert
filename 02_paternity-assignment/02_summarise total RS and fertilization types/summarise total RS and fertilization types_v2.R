@@ -12,8 +12,12 @@ library(tidyverse)
 library(ggplot2)
 
 # load data - table of assigned parents
-# from object in paternity 2022 assignment with lcMLkin called kin.cutoff.info
+# from object in paternity 2022 assignment with lcMLkin output called kin.cutoff.info
 load("input-files/kin_cutoff_info.Rdata")
+
+# load full kinship table (not just parent-offspring relationships)
+# from paternity 2022 assignment with lcMLkin output script
+load("input-files/kin2_22.Rdata")
 
 
 #-------------------------------------------------------------------------------
@@ -209,9 +213,6 @@ shared.fert.wp2$prop.wp[which(is.na(shared.fert.wp2$prop.wp))] <- 0
 
 known.gen.fam <- subset(po.wide, !is.na(po.wide$FamilyID_dad) & !is.na(po.wide$FamilyID_mom))
 num.gen.fam <- unique(known.gen.fam$genetic_fam)
-
-# load full kinship table (not just parent-offspring relationships)
-load("input-files/kin2_22.Rdata")
 
 # loop through the different families
 
