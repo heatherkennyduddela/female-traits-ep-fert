@@ -65,9 +65,9 @@ plot(null.lm$fitted.values, null.lm$residuals)
 # 1) female tail, male tail, female throat, male throat, female breast, male breast
 
 ### Mod 1
-eggs.adj1 <- lm(tot_eggs ~ tail_scaled + socM_tail_scaled +
-                  throat_avg_bright_scaled + socM_t.avg.bright_scaled +
-                  breast_avg_bright_scaled + socM_r.avg.bright_scaled +
+eggs.adj1 <- lm(tot_eggs ~ tail_scaled +
+                  throat_avg_bright_scaled +
+                  breast_avg_bright_scaled +
                   ci_1_julian_scaled, data=fem)
 
 # get table of coefficients

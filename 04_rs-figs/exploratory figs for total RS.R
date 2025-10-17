@@ -34,7 +34,7 @@ fem.epp.rs <- ggplot(fem, aes(x=ep.yes.factor, y=tot_fledge, group=ep.yes)) +
              position=position_jitter(width=0.2, height=0)) +
   xlab("Female EP status") +
   ylab("Total offspring fledged") +
-  ggtitle("t-test p=0.039") +
+  ggtitle("t-test: t=-2.21, df=18.96, p=0.039") +
   ylim(0,10) +
   theme_light()
 
@@ -70,7 +70,7 @@ fem.prop.rs <- ggplot(fem, aes(x=season.prop.ep, y=tot_fledge, group=ep.yes)) +
              position=position_jitter(width=0.0, height=0.1)) +
   xlab("Female proportion EPO") +
   ylab("Total offspring fledged")+
-  ggtitle("Spearman R=0.03, p=0.842") +
+  ggtitle("Spearman Rho=0.03, p=0.842") +
   geom_smooth(method=lm, se=F, linetype="dashed", color="#F2AA84")+
   theme_light() 
 
@@ -104,10 +104,10 @@ fem.num.rs <- ggplot(fem, aes(x=num.epo, y=tot_fledge)) +
   ylab(NULL) +
   xlab("Number of EP offspring") +
   ylab("Total offspring fledged") +
-  ggtitle("Spearman R=0.30, p=0.039") +
+  ggtitle("Spearman Rho=0.30, p=0.039") +
   theme_light()
 
-ggsave("output-files/female RS and number EPO.png", h=4, w=6.6, scale=0.5)
+# ggsave("output-files/female RS and number EPO.png", h=4, w=6.6, scale=0.5)
 
 cor.test(fem$num.epo, fem$tot_fledge, method="spearman")
 # Spearman's rank correlation rho
@@ -184,10 +184,10 @@ fem.eggs.rs <- ggplot(fem, aes(x=tot_eggs, y=tot_fledge)) +
   geom_smooth(method=lm, se=F, color="#F2AA84")+
   ylab("Total offspring fledged") +
   xlab("Total eggs laid") +
-  ggtitle("Spearman R=0.47, p=0.004") +
+  ggtitle("Spearman Rho=0.47, p=0.004") +
   theme_light()
 
-ggsave("output-files/female RS and fecundity.png", h=6, w=8, scale=0.5)
+# ggsave("output-files/female RS and fecundity.png", h=6, w=8, scale=0.5)
 
 cor.test(fem$tot_eggs, fem$tot_fledge, method="spearman")
 # Spearman's rank correlation rho
@@ -208,7 +208,7 @@ fem.mates.rs <- ggplot(fem, aes(x=num.tot.mates, y=tot_fledge)) +
   geom_smooth(method=lm, se=F, color="#F2AA84")+
   ylab("Total offspring fledged") +
   xlab("Total genetic sires") +
-  ggtitle("Spearman R=0.39, p=0.007") +
+  ggtitle("Spearman Rho=0.39, p=0.007") +
   theme_light()
 
 cor.test(fem$num.tot.mates, fem$tot_fledge, method="spearman")
@@ -237,10 +237,10 @@ male.ep.rs <- ggplot(male, aes(x=ep.yes.factor, y=tot.chick)) +
              position=position_jitter(width=0.2, height=0))+
   xlab("Male EP status (outside social nest)") +
   ylab("Total offspring sired\n(EPO + WPO)") +
-  ggtitle("t-test p=0.004")+
+  ggtitle("t-test: t=-3.20, df=21.65, p=0.004")+
   theme_light()
 
-ggsave("output-files/male RS vs binary epp.png", w=4, h=6, scale=0.5)
+# ggsave("output-files/male RS vs binary epp.png", w=4, h=6, scale=0.5)
 
 t.test(tot.chick ~ ep.yes, data=male)
 # Welch Two Sample t-test
@@ -262,10 +262,10 @@ male.num.rs <- ggplot(male, aes(x=ep.chick, y=tot.chick)) +
   geom_smooth(method=lm, se=F, color="#0033CC") +
   xlab("Number of EPO sired") +
   ylab("Total offspring sired\n(WPO + EPO)") +
-  ggtitle("Spearman R=0.50, p<0.001") +
+  ggtitle("Spearman Rho=0.50, p<0.001") +
   theme_light()
 
-ggsave("output-files/male RS vs number EPO.png", h=4, w=6.6, scale=0.5)
+# ggsave("output-files/male RS vs number EPO.png", h=4, w=6.6, scale=0.5)
 
 cor.test(male$ep.chick, male$tot.chick, method="spearman")
 # Spearman's rank correlation rho
@@ -284,10 +284,10 @@ male.prop.rs <- ggplot(male, aes(x=prop.sired.epo, y=tot.chick)) +
   geom_smooth(method=lm, se=F, linetype="solid", color="#0033CC") +
   xlab("Proportion of total sired that are EPO") +
   ylab("Total offspring sired\n(WPO + EPO)") +
-  ggtitle("Spearman R=0.39, p=0.005") +
+  ggtitle("Spearman Rho=0.39, p=0.005") +
   theme_light()
 
-ggsave("output-files/male RS vs prop epo sired.png", h=4, w=6.6, scale=0.5)
+# ggsave("output-files/male RS vs prop epo sired.png", h=4, w=6.6, scale=0.5)
 
 cor.test(male$prop.sired.epo, male$tot.chick, method="spearman")
 # Spearman's rank correlation rho
@@ -317,7 +317,7 @@ ggplot(male, aes(x=wp.chick, y=tot.chick)) +
   ylab("Total offspring sired (WPO + EPO)")+
   ggtitle("Male total RS vs number WPO\n(R=0.89, p<0.001)")
 
-ggsave("output-files/male RS vs number WPO.png")
+# ggsave("output-files/male RS vs number WPO.png")
 
 cor.test(male$wp.chick, male$tot.chick, method="spearman")
 # Spearman's rank correlation rho
@@ -387,7 +387,7 @@ male.mates.rs <- ggplot(male, aes(x=num.tot.mates, y=tot.chick)) +
   xlab("Total genetic dams") +
   ylab("Total offspring sired\n(WPO + EPO)") +
   scale_x_continuous(breaks=c(1,2,3,4,5,6)) +
-  ggtitle("Spearman R=0.63, p<0.001") +
+  ggtitle("Spearman Rho=0.63, p<0.001") +
   theme_light()
 
 cor.test(male$num.tot.mates, male$tot.chick, method="spearman")
@@ -408,6 +408,6 @@ ggarrange(fem.epp.rs, male.ep.rs, fem.num.rs, male.num.rs,
           nrow=5, ncol=2,
           labels=c("A","B","C","D","E","F","G","H","I"))
 
-ggsave("output-files/RS patterns female and male combined_2025-03-13_bluetan.png", h=11, w=8)
+ggsave("output-files/RS patterns female and male combined_2025-10-07_bluetan.png", h=11, w=8)
 
 

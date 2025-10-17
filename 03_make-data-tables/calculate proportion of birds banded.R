@@ -66,4 +66,6 @@ adult.wide$prop.band <- adult.wide$total / adult.wide$adj.size
 # overall prop banded: 
 sum(adult.wide$total)/sum(adult.wide$adj.size) # 0.9513889, 137 out of 144
 
+# save table
+write.csv(adult.wide, "output-files/proportion adults banded 2022.csv", row.names = F)
 
